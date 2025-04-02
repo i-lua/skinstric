@@ -18,7 +18,7 @@ export default function AnalysisPage() {
     }
 
     setSelected(true);
-    
+
     // Enable the Get Summary button but don't navigate yet
     // Navigation will happen when Get Summary is clicked
   };
@@ -29,10 +29,12 @@ export default function AnalysisPage() {
     try {
       const queryString = new URLSearchParams({
         data: JSON.stringify(analysisData),
-        type: "demographics"
+        type: "demographics",
       }).toString();
-      
-      router.push(`/introduce/location/imageupload/analysis/demographics?${queryString}`);
+
+      router.push(
+        `/introduce/location/imageupload/analysis/demographics?${queryString}`
+      );
     } catch (error) {
       console.error("Error navigating to demographics:", error);
       alert("Error processing selection. Please try again.");
@@ -42,9 +44,12 @@ export default function AnalysisPage() {
   // If no data is available, show an error state
   if (!analysisData) {
     return (
-      <div className="relative h-screen flex flex-col items-center justify-center bg-white text-[#1A1B1C]" style={{ fontFamily: 'Roobert Trial, sans-serif' }}>
+      <div
+        className="relative h-screen flex flex-col items-center justify-center bg-white text-[#1A1B1C]"
+        style={{ fontFamily: "Roobert Trial, sans-serif" }}
+      >
         <p className="text-lg font-semibold">No analysis data available</p>
-        <div 
+        <div
           onClick={() => router.push("/introduce/location/imageupload")}
           className="mt-4 bg-purple-500 text-white px-6 py-2 rounded-lg hover:bg-purple-600 cursor-pointer"
         >
@@ -55,13 +60,19 @@ export default function AnalysisPage() {
   }
 
   return (
-    <div className="relative h-screen flex flex-col items-center justify-center bg-white text-[#1A1B1C]" style={{ fontFamily: 'Roobert Trial, sans-serif' }}>
-      
+    <div
+      className="relative h-screen flex flex-col items-center justify-center bg-white text-[#1A1B1C]"
+      style={{ fontFamily: "Roobert Trial, sans-serif" }}
+    >
       {/* Top Bar */}
       <div className="absolute top-0 left-0 w-full border-t-2 border-purple-500 flex justify-between p-4">
         <div>
-          <span className="text-xs tracking-widest uppercase font-semibold">Skinstric</span>
-          <span className="text-xs font-semibold uppercase opacity-60 ml-3">[ Analysis ]</span>
+          <span className="text-xs tracking-widest uppercase font-semibold">
+            Skinstric
+          </span>
+          <span className="text-xs font-semibold uppercase opacity-60 ml-3">
+            [ Analysis ]
+          </span>
         </div>
       </div>
 
@@ -84,7 +95,7 @@ export default function AnalysisPage() {
         {/* Inner Grid */}
         <div className="relative grid grid-cols-2 grid-rows-2 w-[200px] h-[200px] gap-1 rotate-45">
           {/* Demographics - Clickable */}
-          <div 
+          <div
             className={`flex items-center justify-center text-sm font-semibold cursor-pointer transition ${
               selected ? "bg-gray-300" : "bg-gray-100 hover:bg-gray-200"
             }`}
@@ -95,12 +106,16 @@ export default function AnalysisPage() {
 
           {/* Cosmetic Concerns - Not Clickable */}
           <div className="bg-gray-100 flex items-center justify-center text-sm font-semibold opacity-50">
-            <p className="text-[12px] -rotate-45 text-center">COSMETIC CONCERNS</p>
+            <p className="text-[12px] -rotate-45 text-center">
+              COSMETIC CONCERNS
+            </p>
           </div>
 
           {/* Skin Type Details - Not Clickable */}
           <div className="bg-gray-100 flex items-center justify-center text-sm font-semibold opacity-50">
-            <p className="text-[12px] -rotate-45 text-center">SKIN TYPE DETAILS</p>
+            <p className="text-[12px] -rotate-45 text-center">
+              SKIN TYPE DETAILS
+            </p>
           </div>
 
           {/* Weather - Not Clickable */}
@@ -111,24 +126,33 @@ export default function AnalysisPage() {
       </div>
 
       {/* Back Button (Bottom Left) */}
-      <div onClick={() => router.back()} className="absolute bottom-10 left-10 flex items-center space-x-2 cursor-pointer">
+      <div
+        onClick={() => router.back()}
+        className="absolute bottom-10 left-10 flex items-center space-x-2 cursor-pointer hover:opacity-80"
+      >
         <div className="flex items-center justify-center">
           <Image src="/backbutton.svg" alt="Back" height={100} width={100} />
         </div>
       </div>
 
       {/* Get Summary Button (Bottom Right) */}
-      <div 
+      <div
         className={`absolute bottom-10 right-10 flex items-center space-x-2 transition ${
-          selected ? "opacity-100 cursor-pointer" : "opacity-50 pointer-events-none"
+          selected
+            ? "opacity-100 cursor-pointer"
+            : "opacity-50 pointer-events-none"
         }`}
         onClick={handleGetSummary}
       >
-        <div className="flex items-center justify-center">
-          <Image src="/getsummarybutton.svg" alt="Get Summary" width={160} height={160} />
+        <div className="flex items-center justify-center hover:opacity-80">
+          <Image
+            src="/getsummarybutton.svg"
+            alt="Get Summary"
+            width={160}
+            height={160}
+          />
         </div>
       </div>
-
     </div>
   );
 }

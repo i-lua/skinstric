@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function DemographicsPage() {
   const router = useRouter();
@@ -13,9 +13,6 @@ export default function DemographicsPage() {
   // Access the nested data field
   const analysisData = responseData?.data;
 
-  // State for edited values (for reset functionality)
-  const [editedData, setEditedData] = useState(analysisData);
-
   // State for user-selected race, age, and gender, initialized with default values
   const [selectedRace, setSelectedRace] = useState(null);
   const [selectedAge, setSelectedAge] = useState(null);
@@ -23,6 +20,43 @@ export default function DemographicsPage() {
 
   // State for the currently selected category (race, age, or sex)
   const [selectedCategory, setSelectedCategory] = useState("race");
+
+  // Initialize selected states with AI-predicted values using useEffect
+  useEffect(() => {
+    if (analysisData) {
+      // Extract primary race and confidence (AI-predicted)
+      const races = analysisData.race || {};
+      const primaryRaceKey = Object.keys(races).reduce((a, b) => races[a] > races[b] ? a : b, "unknown");
+      const aiPredictedRace = primaryRaceKey
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+      const aiPredictedRaceConfidence = Math.round((races[primaryRaceKey] || 0) * 100);
+
+      // Extract primary age range and confidence (AI-predicted)
+      const ages = analysisData.age || {};
+      const primaryAgeKey = Object.keys(ages).reduce((a, b) => ages[a] > ages[b] ? a : b, "Unknown");
+      const aiPredictedAge = primaryAgeKey;
+      const aiPredictedAgeConfidence = Math.round((ages[primaryAgeKey] || 0) * 100);
+
+      // Extract primary gender and confidence (AI-predicted)
+      const genderData = analysisData.gender || {};
+      const primaryGenderKey = Object.keys(genderData).reduce((a, b) => genderData[a] > genderData[b] ? a : b, "unknown");
+      const aiPredictedGender = primaryGenderKey.charAt(0).toUpperCase() + primaryGenderKey.slice(1);
+      const aiPredictedGenderConfidence = Math.round((genderData[primaryGenderKey] || 0) * 100);
+
+      // Set initial state
+      if (!selectedRace) {
+        setSelectedRace({ race: aiPredictedRace, confidence: aiPredictedRaceConfidence });
+      }
+      if (!selectedAge) {
+        setSelectedAge({ age: aiPredictedAge, confidence: aiPredictedAgeConfidence });
+      }
+      if (!selectedGender) {
+        setSelectedGender({ gender: aiPredictedGender, confidence: aiPredictedGenderConfidence });
+      }
+    }
+  }, [analysisData, selectedRace, selectedAge, selectedGender]);
 
   // If no data is available, show an error state
   if (!analysisData) {
@@ -87,17 +121,6 @@ export default function DemographicsPage() {
       confidence: Math.round(confidence * 100)
     }));
 
-  // Initialize selected states with AI-predicted values if not already set
-  if (!selectedRace) {
-    setSelectedRace({ race: aiPredictedRace, confidence: aiPredictedRaceConfidence });
-  }
-  if (!selectedAge) {
-    setSelectedAge({ age: aiPredictedAge, confidence: aiPredictedAgeConfidence });
-  }
-  if (!selectedGender) {
-    setSelectedGender({ gender: aiPredictedGender, confidence: aiPredictedGenderConfidence });
-  }
-
   // Use the selected values if available, otherwise fall back to AI-predicted values
   const displayedRace = selectedRace ? selectedRace.race : aiPredictedRace;
   const displayedAge = selectedAge ? selectedAge.age : aiPredictedAge;
@@ -125,44 +148,34 @@ export default function DemographicsPage() {
   }
 
   const handleRaceSelect = (race, confidence) => {
+    console.log(`Selected race: ${race}, confidence: ${confidence}%`);
     setSelectedRace({ race, confidence });
   };
 
   const handleAgeSelect = (age, confidence) => {
+    console.log(`Selected age: ${age}, confidence: ${confidence}%`);
     setSelectedAge({ age, confidence });
   };
 
   const handleGenderSelect = (gender, confidence) => {
+    console.log(`Selected gender: ${gender}, confidence: ${confidence}%`);
     setSelectedGender({ gender, confidence });
   };
 
   const handleCategorySelect = (category) => {
+    console.log(`Selected category: ${category}`);
     setSelectedCategory(category);
-  };
-
-  const handleReset = () => {
-    setEditedData(analysisData);
-    setSelectedRace({ race: aiPredictedRace, confidence: aiPredictedRaceConfidence });
-    setSelectedAge({ age: aiPredictedAge, confidence: aiPredictedAgeConfidence });
-    setSelectedGender({ gender: aiPredictedGender, confidence: aiPredictedGenderConfidence });
-    setSelectedCategory("race"); // Default back to race category
-  };
-
-  const handleConfirm = () => {
-    // Optionally, save the selected values (race, age, gender) here before navigating
-    router.push("/introduce/location/imageupload/analysis/selection");
   };
 
   // Handle back button click with a fallback
   const handleBack = () => {
-    console.log("Back button clicked"); // Debugging
-    // Try to go back in history
+    console.log("Back button clicked, attempting to go back");
     router.back();
     // Fallback: If no history, navigate to the upload page
     setTimeout(() => {
       if (window.history.length <= 1) {
         console.log("No history found, navigating to fallback route");
-        router.push("/introduce/location/imageupload");
+        router.push("/introduce/location/imageupload/analysis");
       }
     }, 100); // Small delay to check if router.back() worked
   };
@@ -356,25 +369,26 @@ export default function DemographicsPage() {
 
         {/* Footer */}
         <div className="flex justify-between items-center py-4">
-          <div onClick={handleBack} className="flex items-center cursor-pointer">
-            <Image src="/backbutton.svg" alt="Back" width={100} height={100} />
+          <div 
+            onClick={handleBack} 
+            className="flex items-center justify-center cursor-pointer hover:opacity-80 transition-opacity"
+            style={{ cursor: 'pointer' }}
+          >
+            <Image 
+              src="/backbutton.svg" 
+              alt="Back" 
+              width={100} 
+              height={100} 
+              onError={() => console.error("Failed to load backbutton.svg")} 
+              className="select-none"
+            />
           </div>
 
           <p className="text-xs opacity-70">If A.I. estimate is wrong, select the correct one.</p>
 
+          {/* Removed Reset and Confirm buttons */}
           <div className="flex space-x-4">
-            <button 
-              onClick={handleReset}
-              className="border border-black px-6 py-2 uppercase font-semibold text-sm hover:bg-gray-100 cursor-pointer"
-            >
-              Reset
-            </button>
-            <button 
-              onClick={handleConfirm}
-              className="bg-black text-white px-6 py-2 uppercase font-semibold text-sm hover:bg-gray-800"
-            >
-              Confirm
-            </button>
+            {/* Empty div to maintain layout spacing */}
           </div>
         </div>
       </div>
