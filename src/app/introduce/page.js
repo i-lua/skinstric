@@ -65,14 +65,14 @@ export default function IntroduceYourself() {
 
     {/* Next Button */}
       <div onClick={handleNext} className="absolute bottom-10 right-10 flex items-center space-x-2 cursor-pointer">
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center hover:opacity-80">
           <Image src="/proceedbutton.svg" alt="proceed" width={130} height={130} />
         </div>
       </div>
 
       {/* Back Button */}
       <div onClick={() => router.back()} className="cursor-pointer">
-        <div className="absolute bottom-10 left-10 flex items-center space-x-2 cursor-pointer">
+        <div className="absolute bottom-10 left-10 flex items-center space-x-2 cursor-pointer hover:opacity-80">
           <div className="flex items-center justify-center">
             <Image src="/backbutton.svg" alt="back" width={100} height={100} />
           </div>
