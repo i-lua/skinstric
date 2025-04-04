@@ -130,7 +130,7 @@ export default function AnalysisPage() {
         onClick={() => router.back()}
         className="absolute bottom-10 left-10 flex items-center space-x-2 cursor-pointer hover:opacity-80"
       >
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center transform transition-transform duration-500 hover:scale-110">
           <Image src="/backbutton.svg" alt="Back" height={100} width={100} />
         </div>
       </div>
@@ -144,7 +144,7 @@ export default function AnalysisPage() {
         }`}
         onClick={handleGetSummary}
       >
-        <div className="flex items-center justify-center hover:opacity-80">
+        <div className="flex items-center justify-center hover:opacity-80 transform transition-transform duration-500 hover:scale-110">
           <Image
             src="/getsummarybutton.svg"
             alt="Get Summary"

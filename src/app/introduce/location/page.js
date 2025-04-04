@@ -36,7 +36,11 @@ export default function LocationInput() {
       const data = await response.json();
       console.log("API Response:", data);
       setLoading(false);
-      router.push(`/introduce/location/imageupload?name${encodeURIComponent(name)}&location=${encodeURIComponent(location)}`);
+      router.push(
+        `/introduce/location/imageupload?name${encodeURIComponent(
+          name
+        )}&location=${encodeURIComponent(location)}`
+      );
     } catch (error) {
       console.error("Error submitting data:", error);
       setError("Something went wrong. Please try again.");
@@ -81,33 +85,41 @@ export default function LocationInput() {
 
             {/* Location Input */}
             <input
-            type="text"
-            className="text-4xl font-light mt-1 border-b border-[#1A1B1C] outline-none text-center bg-transparent w-full"
-            placeholder="Location"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-          />
+              type="text"
+              className="text-4xl font-light mt-1 border-b border-[#1A1B1C] outline-none text-center bg-transparent w-full"
+              placeholder="Location"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+            />
+          </div>
         </div>
-      </div>
 
         {/* Error Message */}
         {error && <p className="text-red-500 text-sm mt-4">{error}</p>}
       </div>
 
-    {/* Next Button */}
-    <div onClick={handleSubmit} className="absolute bottom-10 right-10 flex items-center space-x-2 cursor-pointer">
+      {/* Next Button */}
+      <div
+        onClick={handleSubmit}
+        className="absolute bottom-10 right-10 flex items-center space-x-2 cursor-pointer"
+      >
         <p className="text-xs uppercase font-semibold opacity-70 mr-4">
-          {loading ? "Submitting..." :""}
+          {loading ? "Submitting..." : ""}
         </p>
-        <div className="flex items-center justify-center hover:opacity-80">
-          <Image src="/proceedbutton.svg" alt="proceed" width={130} height={130} />
+        <div className="flex items-center justify-center hover:opacity-80 transform transition-transform duration-500 hover:scale-110">
+          <Image
+            src="/proceedbutton.svg"
+            alt="proceed"
+            width={130}
+            height={130}
+          />
         </div>
       </div>
 
       {/* Back Button */}
       <div onClick={() => router.back()} className="cursor-pointer">
         <div className="absolute bottom-10 left-10 flex items-center space-x-2 cursor-pointer hover:opacity-80">
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center transform transition-transform duration-500 hover:scale-110">
             <Image src="/backbutton.svg" alt="back" width={100} height={100} />
           </div>
         </div>

@@ -84,6 +84,14 @@ export default function UploadOrCapturePhoto() {
       backButton.style.cursor = "pointer";
       backButton.style.zIndex = "1001";
       backButton.style.filter = "invert(1)";
+      backButton.style.transition = "transform 0.5s ease-in-out";
+
+      backButton.addEventListener("mouseenter", () => {
+        backButton.style.transform = "scale(1.1)";
+      });
+      backButton.addEventListener("mouseleave", () => {
+        backButton.style.transform = "scale(1)";
+      });
 
       // Close the camera when back button is clicked
       backButton.addEventListener("click", () => {
@@ -104,6 +112,14 @@ export default function UploadOrCapturePhoto() {
       cameraButton.style.height = "140px";
       cameraButton.style.cursor = "pointer";
       cameraButton.style.zIndex = "1001";
+      cameraButton.style.transition = "opactiy 1s ease-in-out";
+
+      cameraButton.addEventListener("mouseenter", () => {
+        cameraButton.style.opacity = ".5";
+      });
+      cameraButton.addEventListener("mouseleave", () => {
+        cameraButton.style.opacity = "1";
+      });
 
       // Capture image when camera button is clicked
       cameraButton.addEventListener("click", () => {
@@ -203,7 +219,7 @@ export default function UploadOrCapturePhoto() {
           onClick={handleOpenCamera}
           className="relative flex items-center justify-center cursor-pointer"
         >
-          <div className="bg-white p-3 rounded-full flex items-center justify-center">
+          <div className="bg-white p-3 rounded-full flex items-center justify-center transform transition-transform duration-500 hover:scale-110">
             <Image src="/camera.svg" alt="Camera" width={500} height={460} />
           </div>
         </div>
@@ -211,7 +227,7 @@ export default function UploadOrCapturePhoto() {
         <div className="relative flex flex-col items-center justify-center cursor-pointer">
           <label
             htmlFor="upload"
-            className="bg-white p-3 rounded-full cursor-pointer flex items-center justify-center"
+            className="bg-white p-3 rounded-full cursor-pointer flex items-center justify-center transform transition-transform duration-500 hover:scale-110"
           >
             <Image
               src="/gallery.svg"
@@ -234,7 +250,7 @@ export default function UploadOrCapturePhoto() {
         onClick={() => router.back()}
         className="absolute bottom-10 left-10 flex items-center space-x-2 cursor-pointer hover:opacity-80"
       >
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center transform transition-transform duration-500 hover:scale-110">
           <Image src="/backbutton.svg" alt="back" width={100} height={100} />
         </div>
       </div>

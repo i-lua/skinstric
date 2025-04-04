@@ -6,18 +6,17 @@ import { useEffect, useState } from "react";
 
 export default function IntroduceYourself() {
   const router = useRouter();
-  const [name, setName] = useState("")
-  const [error, setError] = useState("")
-  
+  const [name, setName] = useState("");
+  const [error, setError] = useState("");
+
   const handleNext = () => {
     if (!name.trim()) {
-      setError('Please enter your first and last name.')
-      return
+      setError("Please enter your first and last name.");
+      return;
     }
-    setError("")
-    router.push(`/introduce/location?name=${encodeURIComponent(name)}`)
-  }
-
+    setError("");
+    router.push(`/introduce/location?name=${encodeURIComponent(name)}`);
+  };
 
   return (
     <div
@@ -55,7 +54,13 @@ export default function IntroduceYourself() {
             </p>
 
             {/* Name Input */}
-            <input type="text" placeholder="Introduce Yourself" value={name} onChange={(e) => setName(e.target.value)} className=" w-2xs text-4xl font-light mt-1 border-b border-[#1A1B1C] inline-block text-black text-center" />
+            <input
+              type="text"
+              placeholder="Introduce Yourself"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className=" w-2xs text-4xl font-light mt-1 border-b border-[#1A1B1C] inline-block text-black text-center"
+            />
           </div>
         </div>
 
@@ -63,17 +68,25 @@ export default function IntroduceYourself() {
         {error && <p className="text-red-500 text-sm mt-4">{error}</p>}
       </div>
 
-    {/* Next Button */}
-      <div onClick={handleNext} className="absolute bottom-10 right-10 flex items-center space-x-2 cursor-pointer">
-        <div className="flex items-center justify-center hover:opacity-80">
-          <Image src="/proceedbutton.svg" alt="proceed" width={130} height={130} />
+      {/* Next Button */}
+      <div
+        onClick={handleNext}
+        className="absolute bottom-10 right-10 flex items-center space-x-2 cursor-pointer"
+      >
+        <div className="flex items-center justify-center hover:opacity-80 transform transition-transform duration-500 hover:scale-110">
+          <Image
+            src="/proceedbutton.svg"
+            alt="proceed"
+            width={130}
+            height={130}
+          />
         </div>
       </div>
 
       {/* Back Button */}
       <div onClick={() => router.back()} className="cursor-pointer">
         <div className="absolute bottom-10 left-10 flex items-center space-x-2 cursor-pointer hover:opacity-80">
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center transform transition-transform duration-500 hover:scale-110">
             <Image src="/backbutton.svg" alt="back" width={100} height={100} />
           </div>
         </div>
