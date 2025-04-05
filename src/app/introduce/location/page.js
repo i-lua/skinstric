@@ -1,10 +1,12 @@
-"use client";
+"use client"; // Mark as Client Component
 
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
+import { Suspense } from "react";
 
-export default function LocationInput() {
+// Client-side component with hooks
+function LocationContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const name = searchParams.get("name");
@@ -37,7 +39,7 @@ export default function LocationInput() {
       console.log("API Response:", data);
       setLoading(false);
       router.push(
-        `/introduce/location/imageupload?name${encodeURIComponent(
+        `/introduce/location/imageupload?name=${encodeURIComponent(
           name
         )}&location=${encodeURIComponent(location)}`
       );
@@ -125,5 +127,14 @@ export default function LocationInput() {
         </div>
       </div>
     </div>
+  );
+}
+
+// Default export with Suspense wrapper
+export default function LocationInput() {
+  return (
+    <Suspense fallback={<div className="h-screen flex items-center justify-center bg-white text-[#1A1B1C]">Loading location input...</div>}>
+      <LocationContent />
+    </Suspense>
   );
 }

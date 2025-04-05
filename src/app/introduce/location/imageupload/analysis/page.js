@@ -1,10 +1,11 @@
-"use client";
+"use client"; // Mark as Client Component
 
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 
-export default function AnalysisPage() {
+// Client-side component with hooks
+function AnalysisContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const dataString = searchParams.get("data");
@@ -18,9 +19,7 @@ export default function AnalysisPage() {
     }
 
     setSelected(true);
-
     // Enable the Get Summary button but don't navigate yet
-    // Navigation will happen when Get Summary is clicked
   };
 
   const handleGetSummary = () => {
@@ -154,5 +153,14 @@ export default function AnalysisPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+// Default export with Suspense wrapper
+export default function AnalysisPage() {
+  return (
+    <Suspense fallback={<div className="h-screen flex items-center justify-center bg-white text-[#1A1B1C]">Loading analysis...</div>}>
+      <AnalysisContent />
+    </Suspense>
   );
 }
