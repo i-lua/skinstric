@@ -15,7 +15,7 @@ export default function Home() {
   }, []);
 
   const handleHover = () => {
-    const shiftValue = window.innerWidth < 900 ? "-25%" : "-50%";
+    const shiftValue = window.innerWidth < 900 ? "-30%" : "-50%";
 
     gsap.to(discoverAIRef.current, {
       opacity: 0,
@@ -26,8 +26,6 @@ export default function Home() {
       x: shiftValue,
       duration: 0.8,
       ease: "power2.out",
-      onStart: () =>
-        headingRef.current.classList.replace("text-center", "text-left"),
     });
     gsap.to(extraBoxesRef.current, {
       opacity: 1,
@@ -47,8 +45,6 @@ export default function Home() {
       x: "0%",
       duration: 0.8,
       ease: "power2.in",
-      onMouseLeave: () =>
-        headingRef.current.classList.replace("text-left", "text-center"),
     });
     gsap.to(extraBoxesRef.current, {
       opacity: 0,
